@@ -37,6 +37,6 @@ app.use((err, req, res, next) => {
 });
 console.log("Gemini key loaded, length:", process.env.GEMINI_API_KEY?.length);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
