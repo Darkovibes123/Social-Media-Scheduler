@@ -51,7 +51,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Content Creator Scheduler</h1>
+        <h1>Social Media Scheduler</h1>
         <div className="header-right">
           <span>Hi, {user?.name}</span>
           <button onClick={handleLogout}>Log Out</button>
