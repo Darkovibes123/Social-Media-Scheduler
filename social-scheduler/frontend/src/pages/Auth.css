@@ -1,0 +1,241 @@
+* {
+  box-sizing: border-box;
+}
+
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+/* Animated light rays background */
+.auth-bg-rays {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 100%, rgba(30,100,255,0.35), transparent 60%);
+  animation: pulseGlow 5s ease-in-out infinite;
+}
+
+.auth-bg-rays::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(60,140,255,0.08) 0deg 2deg,
+    transparent 2deg 8deg
+  );
+  animation: rotateRays 30s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes rotateRays {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Angular card */
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(160deg, #0d0f14 0%, #14161c 100%);
+  border: 1px solid rgba(80,140,255,0.25);
+  padding: 44px 36px;
+  color: #fff;
+  clip-path: polygon(
+    0 8%, 8% 0, 92% 0, 100% 8%,
+    100% 92%, 92% 100%, 8% 100%, 0 92%
+  );
+  box-shadow: 0 0 40px rgba(30,100,255,0.15), 0 20px 60px rgba(0,0,0,0.6);
+  animation: cardEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-logo {
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-size: 14px;
+  color: #6fa8ff;
+  margin-bottom: 24px;
+}
+
+.auth-card h2 {
+  font-size: 28px;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #9aa4b2;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.auth-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.option-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.option-btn:hover {
+  border-color: #4a8bff;
+  background: rgba(74,139,255,0.1);
+  transform: translateY(-2px);
+}
+
+.icon {
+  color: #4a8bff;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: #b0b8c4;
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+input::placeholder {
+  color: #5a6472;
+}
+
+input:focus {
+  border-color: #4a8bff;
+  background: rgba(74,139,255,0.06);
+  box-shadow: 0 0 0 3px rgba(74,139,255,0.15);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.toggle-eye:hover {
+  opacity: 1;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 28px;
+  padding: 14px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #4a8bff;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74,139,255,0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.switch-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #9aa4b2;
+}
+
+.switch-link a {
+  color: #4a8bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.switch-link a:hover {
+  text-decoration: underline;
+}
+
+.error-box {
+  background: rgba(255,60,60,0.1);
+  border: 1px solid rgba(255,60,60,0.3);
+  color: #ff8080;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
