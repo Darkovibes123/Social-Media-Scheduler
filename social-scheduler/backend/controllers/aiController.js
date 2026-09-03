@@ -1,8 +1,8 @@
-// Uses Groq Cloud's API (OpenAI-compatible format)
-// Docs: https://console.groq.com/docs/quickstart
+// Uses Google Gemini's free-tier API
+// Docs: https://ai.google.dev/gemini-api/docs
 
-const GROQ_MODEL = "llama-3.3-70b-versatile";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 // @route POST /api/ai/generate-caption
 // body: { theme: "pageant evening gown look" }
@@ -14,8 +14,8 @@ exports.generateCaption = async (req, res) => {
       return res.status(400).json({ message: "Please provide a theme or keyword." });
     }
 
-    if (!process.env.GROQ_API_KEY) {
-      return res.status(500).json({ message: "Server is missing GROQ_API_KEY." });
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ message: "Server is missing GEMINI_API_KEY." });
     }
 
     const prompt = `You are a social media assistant for a student influencer.
@@ -28,16 +28,12 @@ Respond ONLY in valid JSON, with no extra text, no markdown fences, in this exac
   { "caption": "caption text here", "hashtags": "#tag1 #tag2 #tag3" }
 ]`;
 
-    const response = await fetch(GROQ_URL, {
+    const response = await fetch(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.9,
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.9 },
       }),
     });
 
@@ -45,13 +41,13 @@ Respond ONLY in valid JSON, with no extra text, no markdown fences, in this exac
 
     if (!response.ok) {
       return res.status(502).json({
-        message: "Groq API error. Check your GROQ_API_KEY and try again.",
+        message: "Gemini API error. Check your GEMINI_API_KEY and try again.",
         error: data?.error?.message || "Unknown error",
       });
     }
 
-    const raw = data?.choices?.[0]?.message?.content;
-    const cleaned = raw.replace(/```json/g, "").replace(/```/g, "");
+    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const cleaned = raw.replace(/```json/g, "").replace(/```/g, "").trim();
 
     let options;
     try {
