@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CaptionGenerator from "../components/CaptionGenerator";
 import UploadForm from "../components/UploadForm";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
@@ -49,7 +50,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
       <header className="dashboard-header">
         <h1>Social Media Scheduler</h1>
         <div className="header-right">

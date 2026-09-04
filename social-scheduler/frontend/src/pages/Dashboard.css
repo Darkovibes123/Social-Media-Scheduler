@@ -1,0 +1,116 @@
+.dashboard-page {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f5f6fa;
+  min-height: 100vh;
+  padding: 40px 60px;
+}
+
+.dashboard-page .dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-page .dashboard-header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.dashboard-page .header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: #444;
+}
+
+.dashboard-page .header-right button {
+  background: #5849f5;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-page .header-right button:hover {
+  background: #4838e0;
+  transform: translateY(-1px);
+}
+
+.dashboard-page .dashboard-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.dashboard-page h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4a3fd6, #7b6ff5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.dashboard-page h2::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #4a3fd6, #7b6ff5);
+  margin-top: 8px;
+}
+
+.dashboard-page h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+}
+
+.dashboard-page label {
+  display: block;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b7d;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+.dashboard-page input,
+.dashboard-page textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e2e2ea;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1a1a2e;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.dashboard-page input:focus,
+.dashboard-page textarea:focus {
+  border-color: #7b6ff5;
+  box-shadow: 0 0 0 3px rgba(123,111,245,0.12);
+}
+
+.dashboard-page button {
+  font-family: inherit;
+}
