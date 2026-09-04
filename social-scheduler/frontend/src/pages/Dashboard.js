@@ -5,15 +5,18 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CaptionGenerator from "../components/CaptionGenerator";
 import UploadForm from "../components/UploadForm";
-import "./Dashboard.css";
 import Toast from "../components/Toast";
 import CountUp from "../components/CountUp";
+import DueReminder from "../components/DueReminder";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
   const [prefill, setPrefill] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [toast, setToast] = useState(null);
+  const [now, setNow] = useState(new Date());
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -21,7 +24,14 @@ export default function Dashboard() {
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [toast, setToast] = useState(null);
+
+  // Recheck due posts every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -36,21 +46,30 @@ export default function Dashboard() {
   };
 
   const handlePostCreated = (newPost) => {
-  setPosts((prev) => [...prev, newPost]);
-  setPrefill(null);
-  setToast({ message: "Post saved successfully!", type: "success" });
-};
+    setPosts((prev) => [...prev, newPost]);
+    setPrefill(null);
+    setToast({ message: "Post saved successfully!", type: "success" });
+  };
 
-const handlePostUpdated = (updatedPost) => {
-  setPosts((prev) => prev.map((p) => (p._id === updatedPost._id ? updatedPost : p)));
-  setToast({ message: "Post updated!", type: "success" });
-};
+  const handlePostUpdated = (updatedPost) => {
+    setPosts((prev) => prev.map((p) => (p._id === updatedPost._id ? updatedPost : p)));
+    setToast({ message: "Post updated!", type: "success" });
+  };
 
-const handlePostDeleted = (id) => {
-  setPosts((prev) => prev.filter((p) => p._id !== id));
-  setToast({ message: "Post deleted.", type: "success" });
-};
-  
+  const handlePostDeleted = (id) => {
+    setPosts((prev) => prev.filter((p) => p._id !== id));
+    setToast({ message: "Post deleted.", type: "success" });
+  };
+
+  const handleMarkPosted = async (id) => {
+    try {
+      const { data } = await api.put(`/posts/${id}`, { status: "Posted" });
+      handlePostUpdated(data);
+    } catch (err) {
+      setToast({ message: "Could not update post status.", type: "error" });
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -65,9 +84,13 @@ const handlePostDeleted = (id) => {
   };
 
   const totalPosts = posts.length;
-  const scheduledPosts = posts.filter((p) => p.status === "scheduled").length;
-  const publishedPosts = posts.filter((p) => p.status === "published").length;
-  const draftPosts = posts.filter((p) => p.status === "draft").length;
+  const scheduledPosts = posts.filter((p) => p.status === "Scheduled").length;
+  const publishedPosts = posts.filter((p) => p.status === "Posted").length;
+  const draftPosts = posts.filter((p) => p.status === "Draft").length;
+
+  const duePosts = posts.filter(
+    (p) => p.status === "Scheduled" && new Date(p.scheduledDate) <= now
+  );
 
   return (
     <div className="dashboard-page">
@@ -121,6 +144,8 @@ const handlePostDeleted = (id) => {
           </div>
         </header>
 
+        <DueReminder duePosts={duePosts} onMarkPosted={handleMarkPosted} />
+
         <section className="stats-grid">
           <div className="stat-card fade-in" style={{ animationDelay: "0.05s" }}>
             <p className="stat-label">Total Posts</p>
@@ -162,7 +187,8 @@ const handlePostDeleted = (id) => {
             <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
           )}
         </section>
-         {toast && (
+
+        {toast && (
           <Toast
             message={toast.message}
             type={toast.type}
