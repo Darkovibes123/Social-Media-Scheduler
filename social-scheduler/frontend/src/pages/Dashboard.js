@@ -27,9 +27,12 @@ export default function Dashboard() {
 
   // Recheck due posts every 30 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 30000);
+  const interval = setInterval(() => {
+    setNow(new Date());
+  }, 30000);
+  return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
     const duePosts = posts.filter(
     (p) => p.status === "Scheduled" && new Date(p.scheduledDate) <= now
   );
