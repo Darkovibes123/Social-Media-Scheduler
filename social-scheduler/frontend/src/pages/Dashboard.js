@@ -26,7 +26,7 @@ export default function Dashboard() {
   }, []);
 
   // Recheck due posts every 30 seconds
-  useEffect(() => {
+ useEffect(() => {
   const interval = setInterval(() => {
     setNow(new Date());
   }, 30000);
@@ -194,7 +194,6 @@ export default function Dashboard() {
             <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
           )}
         </section>
-        console.log("Due posts check:", { now, posts, duePosts });
 
         {toast && (
           <Toast
