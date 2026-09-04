@@ -124,8 +124,8 @@ export default function Signup() {
           </button>
 
           <p className="help-text">
-            Need help? <a href="#">Contact admin</a>
-          </p>
+  Need help? <button type="button" className="link-btn">Contact admin</button>
+</p>
         </form>
       </div>
     </div>

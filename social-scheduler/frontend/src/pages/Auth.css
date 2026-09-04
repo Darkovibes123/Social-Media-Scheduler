@@ -399,4 +399,19 @@ input:focus {
   .feature-list {
     display: none;
   }
+  .forgot-link,
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: #a29cf0;
+  text-decoration: none;
+}
+
+.forgot-link:hover,
+.link-btn:hover {
+  text-decoration: underline;
+}
 }

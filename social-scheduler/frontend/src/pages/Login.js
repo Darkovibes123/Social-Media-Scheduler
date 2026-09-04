@@ -109,7 +109,7 @@ export default function Login() {
               />
               Remember me
             </label>
-            <a href="#" className="forgot-link">Forgot password?</a>
+            <button type="button" className="forgot-link">Forgot password?</button>
           </div>
 
           <button type="submit" className="continue-btn" disabled={loading}>
@@ -123,8 +123,8 @@ export default function Login() {
           </button>
 
           <p className="help-text">
-            Need help? <a href="#">Contact admin</a>
-          </p>
+  Need help? <button type="button" className="link-btn">Contact admin</button>
+</p>
         </form>
       </div>
     </div>
