@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [posts, setPosts] = useState([]);
   const [prefill, setPrefill] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState("dashboard");
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -49,6 +50,14 @@ export default function Dashboard() {
     navigate("/login");
   };
 
+  const scrollToSection = (id) => {
+    setActiveSection(id);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const totalPosts = posts.length;
   const scheduledPosts = posts.filter((p) => p.status === "scheduled").length;
   const publishedPosts = posts.filter((p) => p.status === "published").length;
@@ -61,18 +70,30 @@ export default function Dashboard() {
           <span className="logo-dot"></span> SocialFlow
         </div>
         <nav className="sidebar-nav">
-          <a className="nav-item active" href="#dashboard">
+          <button
+            className={`nav-item ${activeSection === "dashboard" ? "active" : ""}`}
+            onClick={() => scrollToSection("dashboard")}
+          >
             <span className="nav-icon">🏠</span> Dashboard
-          </a>
-          <a className="nav-item" href="#caption">
+          </button>
+          <button
+            className={`nav-item ${activeSection === "caption" ? "active" : ""}`}
+            onClick={() => scrollToSection("caption")}
+          >
             <span className="nav-icon">✨</span> Create Content
-          </a>
-          <a className="nav-item" href="#calendar">
+          </button>
+          <button
+            className={`nav-item ${activeSection === "calendar" ? "active" : ""}`}
+            onClick={() => scrollToSection("calendar")}
+          >
             <span className="nav-icon">📅</span> Calendar
-          </a>
-          <a className="nav-item" href="#library">
+          </button>
+          <button
+            className={`nav-item ${activeSection === "library" ? "active" : ""}`}
+            onClick={() => scrollToSection("library")}
+          >
             <span className="nav-icon">🗂️</span> Content Library
-          </a>
+          </button>
         </nav>
         <div className="sidebar-bottom">
           <button className="logout-btn" onClick={handleLogout}>
@@ -82,7 +103,7 @@ export default function Dashboard() {
       </aside>
 
       <main className="main-content">
-        <header className="topbar">
+        <header className="topbar" id="dashboard">
           <div>
             <h1>Welcome back, {user?.name?.split(" ")[0] || "there"} 👋</h1>
             <p className="topbar-sub">Here's what's happening with your content today.</p>
@@ -122,7 +143,7 @@ export default function Dashboard() {
           <CaptionGenerator onSelectCaption={setPrefill} />
         </section>
 
-        <section className="dashboard-section fade-in" style={{ animationDelay: "0.5s" }}>
+        <section className="dashboard-section fade-in" id="library" style={{ animationDelay: "0.5s" }}>
           <h2>Create / Schedule a Post</h2>
           <UploadForm prefill={prefill} onPostCreated={handlePostCreated} />
         </section>

@@ -288,4 +288,12 @@
   .dashboard-page .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .dashboard-page .nav-item {
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
 }
