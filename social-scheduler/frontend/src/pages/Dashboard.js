@@ -49,32 +49,93 @@ export default function Dashboard() {
     navigate("/login");
   };
 
+  const totalPosts = posts.length;
+  const scheduledPosts = posts.filter((p) => p.status === "scheduled").length;
+  const publishedPosts = posts.filter((p) => p.status === "published").length;
+  const draftPosts = posts.filter((p) => p.status === "draft").length;
+
   return (
     <div className="dashboard-page">
-      <header className="dashboard-header">
-        <h1>Social Media Scheduler</h1>
-        <div className="header-right">
-          <span>Hi, {user?.name}</span>
-          <button onClick={handleLogout}>Log Out</button>
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <span className="logo-dot"></span> SocialFlow
         </div>
-      </header>
+        <nav className="sidebar-nav">
+          <a className="nav-item active" href="#dashboard">
+            <span className="nav-icon">🏠</span> Dashboard
+          </a>
+          <a className="nav-item" href="#caption">
+            <span className="nav-icon">✨</span> Create Content
+          </a>
+          <a className="nav-item" href="#calendar">
+            <span className="nav-icon">📅</span> Calendar
+          </a>
+          <a className="nav-item" href="#library">
+            <span className="nav-icon">🗂️</span> Content Library
+          </a>
+        </nav>
+        <div className="sidebar-bottom">
+          <button className="logout-btn" onClick={handleLogout}>
+            <span className="nav-icon">↩</span> Log Out
+          </button>
+        </div>
+      </aside>
 
-      <section className="dashboard-section">
-        <CaptionGenerator onSelectCaption={setPrefill} />
-      </section>
+      <main className="main-content">
+        <header className="topbar">
+          <div>
+            <h1>Welcome back, {user?.name?.split(" ")[0] || "there"} 👋</h1>
+            <p className="topbar-sub">Here's what's happening with your content today.</p>
+          </div>
+          <div className="topbar-right">
+            <div className="avatar-circle">
+              {user?.name?.[0]?.toUpperCase() || "U"}
+            </div>
+          </div>
+        </header>
 
-      <section className="dashboard-section">
-        <UploadForm prefill={prefill} onPostCreated={handlePostCreated} />
-      </section>
+        <section className="stats-grid">
+          <div className="stat-card fade-in" style={{ animationDelay: "0.05s" }}>
+            <p className="stat-label">Total Posts</p>
+            <h3>{totalPosts}</h3>
+            <span className="stat-tag">All-time content</span>
+          </div>
+          <div className="stat-card fade-in" style={{ animationDelay: "0.15s" }}>
+            <p className="stat-label">Scheduled</p>
+            <h3>{scheduledPosts}</h3>
+            <span className="stat-tag">Upcoming posts</span>
+          </div>
+          <div className="stat-card fade-in" style={{ animationDelay: "0.25s" }}>
+            <p className="stat-label">Published</p>
+            <h3>{publishedPosts}</h3>
+            <span className="stat-tag">Live content</span>
+          </div>
+          <div className="stat-card fade-in" style={{ animationDelay: "0.35s" }}>
+            <p className="stat-label">Drafts</p>
+            <h3>{draftPosts}</h3>
+            <span className="stat-tag">In progress</span>
+          </div>
+        </section>
 
-      <section className="dashboard-section">
-        <h3>Your Content Calendar</h3>
-        {loading ? (
-          <p>Loading posts...</p>
-        ) : (
-          <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
-        )}
-      </section>
+        <section className="dashboard-section fade-in" id="caption" style={{ animationDelay: "0.4s" }}>
+          <h2>AI Caption Generator</h2>
+          <CaptionGenerator onSelectCaption={setPrefill} />
+        </section>
+
+        <section className="dashboard-section fade-in" style={{ animationDelay: "0.5s" }}>
+          <h2>Create / Schedule a Post</h2>
+          <UploadForm prefill={prefill} onPostCreated={handlePostCreated} />
+        </section>
+
+        <section className="dashboard-section fade-in" id="calendar" style={{ animationDelay: "0.6s" }}>
+          <h2>Your Content Calendar</h2>
+          {loading ? (
+            <p className="loading-text">Loading posts...</p>
+          ) : (
+            <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
+          )}
+        </section>
+      </main>
     </div>
   );
 }
