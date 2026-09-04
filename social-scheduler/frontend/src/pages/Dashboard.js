@@ -30,6 +30,10 @@ export default function Dashboard() {
     const interval = setInterval(() => {
       setNow(new Date());
     }, 30000);
+    const duePosts = posts.filter(
+    (p) => p.status === "Scheduled" && new Date(p.scheduledDate) <= now
+  );
+  console.log("Due posts check:", { now, posts, duePosts });
     return () => clearInterval(interval);
   }, []);
 
@@ -187,6 +191,7 @@ export default function Dashboard() {
             <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
           )}
         </section>
+        console.log("Due posts check:", { now, posts, duePosts });
 
         {toast && (
           <Toast
