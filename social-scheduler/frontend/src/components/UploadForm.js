@@ -58,7 +58,6 @@ export default function UploadForm({ prefill, onPostCreated }) {
 
   return (
     <form className="upload-form" onSubmit={handleSubmit}>
-      <h3>Create / Schedule a Post</h3>
       {error && <div className="error-box">{error}</div>}
 
       <label>Media (image or video)</label>

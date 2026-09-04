@@ -6,6 +6,8 @@ import Calendar from "../components/Calendar";
 import CaptionGenerator from "../components/CaptionGenerator";
 import UploadForm from "../components/UploadForm";
 import "./Dashboard.css";
+import Toast from "../components/Toast";
+import CountUp from "../components/CountUp";
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
@@ -19,6 +21,7 @@ export default function Dashboard() {
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const [toast, setToast] = useState(null);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -33,18 +36,21 @@ export default function Dashboard() {
   };
 
   const handlePostCreated = (newPost) => {
-    setPosts((prev) => [...prev, newPost]);
-    setPrefill(null);
-  };
+  setPosts((prev) => [...prev, newPost]);
+  setPrefill(null);
+  setToast({ message: "Post saved successfully!", type: "success" });
+};
 
-  const handlePostUpdated = (updatedPost) => {
-    setPosts((prev) => prev.map((p) => (p._id === updatedPost._id ? updatedPost : p)));
-  };
+const handlePostUpdated = (updatedPost) => {
+  setPosts((prev) => prev.map((p) => (p._id === updatedPost._id ? updatedPost : p)));
+  setToast({ message: "Post updated!", type: "success" });
+};
 
-  const handlePostDeleted = (id) => {
-    setPosts((prev) => prev.filter((p) => p._id !== id));
-  };
-
+const handlePostDeleted = (id) => {
+  setPosts((prev) => prev.filter((p) => p._id !== id));
+  setToast({ message: "Post deleted.", type: "success" });
+};
+  
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -118,22 +124,22 @@ export default function Dashboard() {
         <section className="stats-grid">
           <div className="stat-card fade-in" style={{ animationDelay: "0.05s" }}>
             <p className="stat-label">Total Posts</p>
-            <h3>{totalPosts}</h3>
+            <h3><CountUp end={totalPosts} /></h3>
             <span className="stat-tag">All-time content</span>
           </div>
           <div className="stat-card fade-in" style={{ animationDelay: "0.15s" }}>
             <p className="stat-label">Scheduled</p>
-            <h3>{scheduledPosts}</h3>
+            <h3><CountUp end={scheduledPosts} /></h3>
             <span className="stat-tag">Upcoming posts</span>
           </div>
           <div className="stat-card fade-in" style={{ animationDelay: "0.25s" }}>
             <p className="stat-label">Published</p>
-            <h3>{publishedPosts}</h3>
+            <h3><CountUp end={publishedPosts} /></h3>
             <span className="stat-tag">Live content</span>
           </div>
           <div className="stat-card fade-in" style={{ animationDelay: "0.35s" }}>
             <p className="stat-label">Drafts</p>
-            <h3>{draftPosts}</h3>
+            <h3><CountUp end={draftPosts} /></h3>
             <span className="stat-tag">In progress</span>
           </div>
         </section>
@@ -156,6 +162,13 @@ export default function Dashboard() {
             <Calendar posts={posts} onUpdated={handlePostUpdated} onDeleted={handlePostDeleted} />
           )}
         </section>
+         {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </main>
     </div>
   );

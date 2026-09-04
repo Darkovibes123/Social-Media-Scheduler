@@ -25,7 +25,6 @@ export default function CaptionGenerator({ onSelectCaption }) {
 
   return (
     <div className="caption-generator">
-      <h3>AI Caption Generator</h3>
       <form onSubmit={handleGenerate} className="caption-form">
         <input
           type="text"
